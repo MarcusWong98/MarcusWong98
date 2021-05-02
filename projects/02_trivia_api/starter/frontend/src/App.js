@@ -23,7 +23,7 @@ class App extends Component {
           <Route path="/" exact component={QuestionView} />
           <Route path="/add" component={FormView} />
           <Route path="/play" component={QuizView} />
-          <Route component={QuestionView} />
+          {/* <Route component={QuestionView}/> */}
         </Switch>
       </Router>
     </div>
