@@ -96,6 +96,8 @@ class QuestionView extends Component {
       },
       crossDomain: true,
       success: (result) => {
+
+        console.log(JSON.stringify(result))
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,

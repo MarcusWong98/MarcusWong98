@@ -107,14 +107,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable')
 
-    def test_search_question(self):
+    def test_search_questions(self):
         res = self.client().post('/questions/search', json={'searchTerm': 'test'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
         
-    def test_search_question_404(self):
+    def test_search_questions_404(self):
         res = self.client().post('/questions/search', json={'searchTerm': '*&A^D* @GHRIUR*&!'})
         data = json.loads(res.data)
 
@@ -136,14 +136,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
-    
-    def test_get_category_questions_422(self):
-        res = self.client().get('/categories/adada/questions')
-        data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 422)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'Unprocessable')
 
     def test_get_category_questions_404(self):
         res = self.client().get('/categories/1000000/questions')

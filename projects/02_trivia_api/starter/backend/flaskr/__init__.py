@@ -172,18 +172,20 @@ def create_app(test_config=None):
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
 
-        json_obj = request.get_json()
+        data = request.json
+
+        search_term = data['searchTerm']
+
+        print(search_term)
         
-        if 'searchTerm' not in json_obj:
-            abort(422)
-      
-        print('testestset')
+        if search_term is None:
+              abort(422)
+            
+      #   print('testestset')
        
-        print(json_obj)
+      #   print(json_obj)
 
-        questions = Question.query.filter(Question.question.ilike(f'%{json_obj["searchTerm"]}%')).all()
-
-        print(len(questions))
+        questions = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
 
         if len(questions) == 0:
             abort(404)
@@ -213,8 +215,7 @@ def create_app(test_config=None):
       #   questions: result.questions,
       #     totalQuestions: result.total_questions,
       #     currentCategory: result.current_category
-      #   if type(id) != int:
-      #       abort(422)
+
 
         category = Category.query.get(id)    
         

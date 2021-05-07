@@ -88,6 +88,125 @@ GET '/categories'
 '6' : "Sports"}
 
 ```
+GET '/questions'
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Fetches a string of current category
+- Fetches a list of question dictionaries with question information, such as answer and category type
+- Request Arguments: None
+- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs
+{'1' : "Science",
+'2' : "Art",
+'3' : "Geography",
+'4' : "History",
+'5' : "Entertainment",
+'6' : "Sports"}
+- Returns: A string that is a representation of the current category
+- Returns: A list of questions that contains dictionaries for questions with several key-value pairs for different information. 5 kinds of information are contained in dictionaries. The difficulty is represented by integers. Category type is also represented by integers corresponding to different types. 
+"questions": [
+    {
+        "answer": "test",
+        "category": 2,
+        "difficulty": 1,
+        "id": 3,
+        "question": "test"
+    },
+    {
+        "answer": "art",
+        "category": 3,
+        "difficulty": 1,
+        "id": 4,
+        "question": "art"
+    }
+],
+
+GET '/categories/<int:id>/questions' 
+- Fetches a integer representation of current category type
+- Fetches a list of questions with 5 kinds of information which are answer, category, difficulty, question id and question itself
+- Fetches a number of how many question there are of type of the category represented by the integer
+- Request Arguments: None
+Returns: a list of questions with 5 kinds of information which are answer, category, difficulty, question id and question itself
+[
+    {
+      "answer": "test",
+      "category": 2,
+      "difficulty": 1,
+      "id": 3,
+      "question": "test"
+    }
+]
+
+POST '/questions'
+- Send a json object to create a question
+JSON.stringify({
+    question: [String],
+    answer: [String],
+    difficulty: [Integer],
+    category: [Integer]
+})
+Return: a json object that contains success status, true if successfully create a question
+{'success': True}
+
+       
+POST '/questions/search'
+- Send a json object for searching questions
+JSON.stringify({searchTerm: searchTerm})
+Return: a json object that contains success status, true if successfully get questions with search term. Current category type number representation corresponding to different type, a list of questions and number of total questions 
+{
+    "currentCategory":1,
+    "questions":[{"answer":"test","category":2,"difficulty":1,"id":3,"question":"test"}],
+    "success":true,
+    "totalQuestions":1
+}
+
+
+POST '/quizzes'
+- Send a json object to get new unanswered questions for quiz by quiz_category.id, and filter out unanswered questions with previous_questions
+JSON.stringify({
+    previous_questions: [Array],
+    quiz_category: [Object]
+})
+Return: a json object that contains a list of questions
+{
+"question":{
+    "answer":"art",
+    "category":3,
+    "difficulty":1,
+    "id":4,
+    "question":"art"
+}}
+
+DELETE '/questions/<int:id>'
+- Delete a question with ID(Must be an integer) passed into the URI
+Return: a json object that contains success status, true if successfully delete a question
+jsonify({'success': True})
+```
+
+```
+Error Type:
+
+Not_found error
+- If the expected value not found in db, it would return a 404 error type
+{
+    'success': False,
+    'message': 'Not Found',
+    'error': 404
+}
+
+Unprocessable error
+- If something wrong in the request like making a post request without sending json, it would return a 422 error type
+{
+    'success': False,
+    'message': 'Unprocessable',
+    'error': 422
+}
+  @app.errorhandler(422)
+  def unprocessable(error):
+        return jsonify({
+              'success': False,
+              'message': 'Unprocessable',
+              'error': 422
+        }), 422
+
 
 
 ## Testing
